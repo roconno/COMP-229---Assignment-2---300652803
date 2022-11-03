@@ -1,0 +1,102 @@
+<%- include('partials/head.ejs') %>
+<%- include('partials/header.ejs') %>
+<section class="">
+  <div class="container">
+    <div class="row d-flex align-items-center justify-content-center h-100">
+      <div class="col-md-7 col-lg-5 col-xl-5 offset-xl-1">
+          <!-- name input -->
+          <div class="form-outline mb-4">
+            <input id="name" class="form-control form-control-lg" />
+            <label class="form-label" for="name">name</label>
+          </div>
+
+          <!-- number input -->
+          <div class="form-outline mb-4">
+            <input id="number" class="form-control form-control-lg" />
+            <label class="form-label" for="pass">number</label>
+          </div>
+
+              <!-- number input -->
+          <div class="form-outline mb-4">
+            <input id="email" class="form-control form-control-lg" />
+            <label class="form-label" for="pass">email</label>
+          </div>
+
+          <div class="d-flex justify-content-around align-items-center mb-4">        
+          <!-- button -->
+          <button id="update" class="btn btn-success btn-lg btn-block">Update</button>
+          <button id="cancel" class="btn btn-primary btn-lg btn-block">Cancel</button>
+          <button id="delete" class="btn btn-danger btn-lg btn-block">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+<%- include('partials/footer.ejs') %>
+
+<script>
+
+    let obj = { 
+      name: '<%=contact.name%>',
+      number: '<%=contact.number%>',
+      email: '<%=contact.email%>'
+    };
+
+    $("#name").val(obj.name);
+    $("#number").val(obj.number);
+    $("#email").val(obj.email);
+
+    console.log(obj);
+
+    $('#cancel').click(()=>{window.location.href = "/contacts"});
+
+    $('#delete').click(()=>{
+        (async () => {
+        const rawResponse = await fetch('/delete', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({contact: obj})
+      });
+      const content = await rawResponse.json();
+      console.log(content);
+      if (content.okay) {
+        window.location.href = "/contacts";
+      }
+      })();
+    });
+
+    $('#update').click(()=>{
+
+        let update = {
+          name: $("#name").val().trim(),
+          number: $("#number").val().trim(),
+          email: $("#email").val().trim()
+        };
+
+        if (obj.name === obj.number && obj.name === obj.email && obj.email === '') {
+          obj = update;
+        }
+
+        (async () => {
+        const rawResponse = await fetch('/update_or_insert', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({contact: obj, update: update})
+      });
+      const content = await rawResponse.json();
+      console.log(content);
+      if (content.okay) {
+        window.location.href = "/contacts";
+      }
+      })();
+    });
+
+</script>
+
+

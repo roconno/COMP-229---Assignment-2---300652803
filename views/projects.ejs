@@ -1,0 +1,30 @@
+<%- include('partials/head.ejs') %>
+<%- include('partials/header.ejs') %>
+<!--container-->
+<div class="container">
+    <!--Section: Contact v.2-->
+<section class="mb-4">
+    <ul>
+        <% articles.forEach((article)=> { %>
+            <!-- row -->
+            <div class="row">
+                <!--Grid column-->
+                <div class="col-md-5 mb-md-0 mb-4">
+                    <li>
+                        <h2> <%= article.title %> </h2>
+                        <p> <%= article.body %> </p>
+                        <p> <%= article.type %> </p>
+                        <p> <%= article.role %> </p>
+                    </li>
+                </div><!--Grid column-->
+                <!--Grid column-->
+                <div class="col-md-7 mb-md-0 mb-4">
+                    <img src="<%= article.image %>" width="440" height="200"/>
+                </div>
+            </div><!--row-->
+            <hr />
+        <% }) %>
+    </ul>
+</section><!--Section-->
+</div><!--container-->
+<%- include('partials/footer.ejs') %>

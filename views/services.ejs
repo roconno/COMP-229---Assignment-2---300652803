@@ -1,0 +1,32 @@
+<%- include('partials/head.ejs') %>
+<%- include('partials/header.ejs') %>
+<!--container-->
+<div class="container">
+    <!--Section-->
+<section class="mb-4">
+     <div class="row">
+        <!--Grid column-->
+        <div class="col-md-5 mb-md-0 mb-2">
+            <ul>
+                <% articles.forEach((article)=> { %>
+                    <li>
+                        <h2>
+                            <%= article.title %>
+                        </h2>
+                        <p>
+                            <%= article.body %>
+                        </p>
+                    </li>
+                    <hr />
+                <% }) %>
+            </ul>
+        </div><!--Grid column-->
+        <!--Grid column-->
+        <div class="col-md-5 mb-md-0 mb-2">
+            <!--width="550" height="500"-->
+            <img src="images/services2.jpg" width="550" height="500">
+        </div><!--Grid column-->
+     </div><!--row-->
+</section><!--Section-->
+</div><!--container-->
+<%- include('partials/footer.ejs') %>

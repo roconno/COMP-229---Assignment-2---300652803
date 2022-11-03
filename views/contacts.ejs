@@ -1,0 +1,86 @@
+<%- include('partials/head.ejs') %>
+<%- include('partials/header.ejs') %>
+<!--container-->
+<div class="container">
+    <h4 class="h1-responsive font-weight-bold text-center my-4">Contacts</h4>
+<section class="mb-4">
+    <table class="table">
+        <thead>
+            <tr>
+                <th/>
+                <th scope="col">Name</th>
+                <th scope="col">Number</th>
+                <th scope="col">Email</th>
+            </tr>
+        </thead>
+        <tbody id="all_dem_deh">
+            <% contacts.forEach((contact, index)=> { %>
+            <tr>
+                <th scope="row"> <%=index+1%> </th>
+                <td> <%= contact.name %> </td>
+                <td> <%= contact.number %> </td>
+                <td> <%= contact.email %> </td>
+                <td> <button 
+                    email="<%=contact.email%>" 
+                    name="<%=contact.name%>" 
+                    number="<%=contact.number%>" 
+                    _id="<%=contact._id%>" 
+                    id="update_<%=index%>" 
+                    class="btn btn-primary">update</button> </td>
+               
+                <td> <button 
+                    email="<%=contact.email%>" 
+                    name="<%=contact.name%>" 
+                    number="<%=contact.number%>" 
+                     id="delete_<%=index%>" 
+                     class="btn btn-danger">delete</button> </td>
+            </tr>
+            <% }) %>
+        <tbody>
+    </table>
+</section><!--Section-->
+</div><!--container-->
+<%- include('partials/footer.ejs') %>
+
+<script>
+    <% contacts.forEach((contact, index)=>{ %>
+        $( "#all_dem_deh" ).on('click', `#update_${<%=index%>}`, function(e) {
+            let obj = { 
+                    id: this.getAttribute("_id"),
+                };
+
+            const searchParams = new URLSearchParams(obj);
+
+            window.location.href = "/update?" + searchParams.toString();
+
+        });
+    <% }) %>
+
+    <% contacts.forEach((contact, index)=>{ %>
+        $( "#all_dem_deh" ).on('click', `#delete_${<%=index%>}`, function(e) {
+
+            console.log(`delete ${this.getAttribute("name")}`);
+            let obj = { 
+                    name: this.getAttribute("name") ,
+                    number: this.getAttribute("number"),
+                    email: this.getAttribute("email")
+                };
+            (async () => {
+              const rawResponse = await fetch('/delete', {
+              method: 'POST',
+              headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({contact: obj})
+            });
+            const content = await rawResponse.json();
+            console.log(content);
+            if (content.okay) {
+              window.location.href = "/contacts";
+            }
+            })();
+        });
+    <% }) %>
+   
+</script>
